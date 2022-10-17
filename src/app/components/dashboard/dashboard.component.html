@@ -1,0 +1,172 @@
+<div class="dashboard-content">
+    <div class="container" [hidden]="!checkExistPermission('LEADS_CREATE')">
+        <div class="row">
+            <div class="col-8"></div>
+            <div class="col-2">
+                <button mat-button color="primary" (click)="openSourceModal()">Новый лид</button>
+            </div>
+            <div class="col-2">
+                <form>
+                    <input type="text" id="emailOrPhone" #emailOrPhone placeholder="Email или телефон...">
+                    <button class="search_button" (click)="onSubmit(emailOrPhone.value)" type="submit"></button>
+                </form>
+            </div>
+
+        </div>
+     
+    </div>
+
+
+    <div class="row">
+        <div class="col-4">
+            <h4 class="center leads-title" style="font-size: 30px;">Новые заявки</h4>
+            <div class="filters">
+                <mat-checkbox class="filled-in"
+                    [(ngModel)]="leadExpress">
+                    Только курьерская доставка
+                </mat-checkbox>
+            </div>
+            
+            <mat-card *ngFor="let lead of nLeads | newLead: leadExpress:search; let i = index"
+            [ngClass]="{'card' : true, 'card-lead' : true, 'darken-1' : true, 'white-text' : true, 'blue-grey': true}"
+            (click)="openHistory($event, lead, i, nLeads)">
+            <mat-card-content class="white-text">
+                <p class="card-content__comments">({{lead.count_create ? lead.count_create : 1}}) <span class="clip">{{lead.title}}</span></p>
+                        <h4 style="font-size: 20px;">{{lead.link}}</h4>
+                        <h4 style="font-size: 20px;">{{lead.phone}}</h4>
+                        <div class="flex-block content-between items-center">
+                            <div class="lead__source">
+                                <span class="lead__source-icon"><svg fill="#fff" width="20px" height="20px" class="" style="border-color: rgb(255, 255, 255);"><use [attr.xlink:href]="'#unit-icon-'+lead.source.id"></use></svg></span>
+                                &nbsp;
+                                <span class="lead__source-title">{{ lead.source.title }}</span>
+                                
+                            </div>
+
+                            <svg 
+                                    *ngIf="lead.is_express_delivery"                                          
+                                    fill="#fff"
+                                    width="35px"
+                                    height="20px"
+                                ><use xlink:href="#delivery-icon"></use>
+                            </svg>
+                                
+                            <div
+                                class="lead__unit-title  unit__color"
+                                
+                            >{{ lead.responsible }}
+                            </div>
+                        </div>
+            </mat-card-content>
+        </mat-card>
+        </div>
+        <div class="col-4">
+            <h4 class="center leads-title" style="font-size: 30px;">В работе</h4>
+                <div class="filters">
+                    <mat-checkbox class="filled-in"
+                        [(ngModel)]="leadProcessExpress">
+                        Только курьерская доставка
+                    </mat-checkbox>
+                </div>
+            
+                <mat-card *ngFor="let lead of processingLeads | processing: leadProcessExpress:search; let i = index"
+                [ngClass]="{'card' : true, 'card-lead' : true, 'darken-1' : true, 'white-text' : true, 'blue-grey' : true}"
+                (click)="openHistory($event, lead, i, processingLeads )"
+                >
+                <mat-card-content class="white-text">
+                    <span
+                                [ngClass]="{
+                                    'lead-date' : true, 
+                                    'date-green': (dateCheck(lead.updated_at_time, 24,'less')),
+                                    'date-blue' : dateCheck(lead.updated_at_time, 24,'more') && dateCheck(lead.updated_at_time, 48,'less'),
+                                    'date-grey' : dateCheck(lead.updated_at_time, 48,'more') && dateCheck(lead.updated_at_time, 72,'less'),
+                                    'date-red' : dateCheck(lead.updated_at_time, 72,'more')
+
+                                }"
+                            >
+
+
+                                {{timeStr(lead.updated_at_time)}}
+                            </span
+                            >
+                            <p class="card-content__comments">({{lead.count_create}}) <span class="clip">{{lead.title}}</span></p>
+
+                            <h4 style="font-size: 20px;">{{lead.link}}</h4>
+                            <h4 style="font-size: 20px;">{{lead.phone}}</h4>
+                            
+                            <div class="flex-block content-between items-center">
+                                <div class="lead__source">
+                                    <span class="lead__source-icon"><svg fill="#fff" width="20px" height="20px" class="" style="border-color: rgb(255, 255, 255);"><use [attr.xlink:href]="'#unit-icon-'+lead.source.id"></use></svg></span>
+                                    &nbsp;
+                                    <span class="lead__source-title">{{ lead.source.title }}</span>
+                                    
+                                </div>
+
+                                <svg 
+                                        *ngIf="lead.is_express_delivery"                                          
+                                        fill="#fff"
+                                        width="35px"
+                                        height="20px"
+                                    ><use xlink:href="#delivery-icon"></use>
+                                    </svg>
+                                    
+                                <div
+                                    class="lead__unit-title  unit__color"
+                                    
+                                >{{ lead.responsible }}
+                                </div>
+                            </div>
+                    </mat-card-content>
+                </mat-card>
+        </div>
+        <div class="col-4">
+            <h4 class="center leads-title" style="font-size: 30px;">Выполнено</h4>
+            <div class="filters">
+                <mat-checkbox class="filled-in"
+                            [(ngModel)]="dLeadQuality"
+                            >
+                            Только качественные
+                </mat-checkbox>
+                <mat-checkbox class="filled-in"
+                            [(ngModel)]="dLeadQualityFalse"
+                            >
+                            Только некачественные
+                </mat-checkbox>
+            </div>
+            <mat-card *ngFor="let lead of dLeads  | done:dLeadQuality:dLeadQualityFalse:search; let i = index"
+            [ngClass]="{'card' : true, 'card-lead' : true,  'darken-1' : true, 'white-text' : true, 'green': lead.isQualityLead, 'red' : !lead.isQualityLead}"
+            (click)="openHistory($event, lead, i, dLeads)"
+            >
+            <mat-card-content class="white-text">
+                <p class="card-content__comments">({{lead.count_create}}) <span class="clip">{{lead.title}}</span></p>
+
+                <h4 style="font-size: 20px;">{{lead.link}}</h4>
+                        <h4 style="font-size: 20px;">{{lead.phone}}</h4>
+                      
+                <div class="flex-block content-between items-center">
+                    <div class="lead__source">
+                        <span class="lead__source-icon"><svg fill="#fff" width="20px" height="20px" class="" style="border-color: rgb(255, 255, 255);"><use [attr.xlink:href]="'#unit-icon-'+lead.source.id"></use></svg></span>
+                        &nbsp;
+                        <span class="lead__source-title">{{ lead.source.title }}</span>
+                        
+                    </div>
+
+                    <svg 
+                            *ngIf="lead.is_express_delivery"                                          
+                            fill="#fff"
+                            width="35px"
+                            height="20px"
+                        ><use xlink:href="#delivery-icon"></use>
+                        </svg>
+                        
+                    <div
+                        class="lead__unit-title unit__color"
+                        
+                    >{{ lead.responsible }}
+                    </div>
+                </div>
+            </mat-card-content>
+        
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="layout-wrapper">
+    <div class="'content-wrapper">
+
+        <mat-sidenav-container class="side-container" style="background-color: #cedce0">
+            <mat-sidenav #sidenav class="side-container_nav">
+                <app-sidenav-list [navigation]="navigation" (sidenavClose)="sidenav.close()" ></app-sidenav-list>
+            </mat-sidenav>
+
+            <mat-sidenav-content>
+                <app-navigation [navigation]="navigation" (sidenavToggle)="sidenav.toggle()"></app-navigation>
+                <main>
+                    <router-outlet></router-outlet>
+                </main>
+            </mat-sidenav-content>
+
+        </mat-sidenav-container>
+
+        <app-preloader></app-preloader>
+    </div>
+</div>

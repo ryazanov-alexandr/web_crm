@@ -1,0 +1,123 @@
+<h1 mat-dialog-title>Новый лид</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="col-12">
+                     
+            <div class="row">
+                <div formGroupName="linkPhone" class="row">
+                    <div class="col-6">
+                        <mat-form-field class="full-width">
+                            <mat-label>Email</mat-label>
+                            <input type="text" matInput formControlName="link" [ngClass]="{'invalid': f.linkPhone.get('link').hasError('RequireLinkPhone')}"
+                                    placeholder="xxx@xxx.xxx" pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/">
+                        
+                            <mat-error *ngIf="f.linkPhone.get('link').hasError('RequireLinkPhone')">
+                                <div>Введите ссылку или телефон</div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="full-width">
+                            <mat-label>Телефон</mat-label>
+                            <input type="text" matInput formControlName="phone" [ngClass]="{'invalid': f.linkPhone.get('phone').hasError('RequireLinkPhone')}"
+                                    placeholder="+7(xxx)xxx-xx-xx" pattern="[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{2}[\-]\d{2}" minlength="16" maxlength="16">
+                        
+                            <mat-error *ngIf="f.linkPhone.get('phone').hasError('RequireLinkPhone')">
+                                <div>Введите ссылку или телефон</div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Ответственный</mat-label>
+                                <mat-select formControlName="responsible_id">
+                                    <mat-option *ngFor="let user of users" [value]="user.id">
+                                    {{user.firstname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        <div class="invalid_custom" *ngIf="f.responsible_id.errors  && f.responsible_id.errors.required && f.responsible_id.touched">Обязательно к заполнению</div>
+                    </div>
+    
+                    <div class="col-6">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Источник</mat-label>
+                            <mat-select formControlName="source_id">
+                              <mat-option *ngFor="let source of sources" [value]="source.id">
+                                {{source.title}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div class="invalid_custom" *ngIf="f.source_id.errors  && f.source_id.errors.required && f.source_id.touched">Обязательно к заполнению</div>
+                    </div>
+                </div>
+    
+                
+                <div class="row">
+                    <div class="col-4">
+                        <div>Доп. продажа?</div>
+                        <mat-radio-group aria-label="Select an option" formControlName="is_add_sale">
+                            
+                            <mat-radio-button 
+                                checked="checked"
+                                [value]="'0'"
+                            >
+                                Нет
+                            </mat-radio-button>
+                            
+                            <mat-radio-button 
+                                [value]="'1'"
+                            >
+                                Да
+                            </mat-radio-button>
+                        
+                        </mat-radio-group>
+                    </div>
+    
+                    <div class="col-4">
+                        <div>Курьерская доставка?</div>
+                        <mat-radio-group aria-label="Select an option" formControlName="is_express_delivery">
+                            
+                            <mat-radio-button 
+                                checked="checked"
+                                [value]="'0'"
+                            >
+                                Нет
+                            </mat-radio-button>
+                            
+                            <mat-radio-button 
+                                [value]="'1'"
+                            >
+                                Да
+                            </mat-radio-button>
+                        
+                        </mat-radio-group>
+                    </div>
+                    
+                </div>
+    
+    
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field class="textarea-full-width">
+                            <mat-label>Комментарий</mat-label>
+                            <textarea matInput placeholder="" formControlName="text"></textarea>
+                          </mat-form-field>
+                    </div>
+                </div>
+    
+                <div class="login_submit_button">
+                    <button type="submit" [disabled]="form.invalid" mat-button color="primary">Отправить<i class="material-icons right">send</i></button>
+                </div>
+    
+            </div>
+    
+        
+            
+            
+            
+        </form>
+    </div>
+</div>

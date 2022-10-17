@@ -1,0 +1,91 @@
+<div class="container">
+    <div class="row">
+      
+        <div class="col-10">
+            <h4>Архив лидов</h4>
+        </div>
+       
+    </div>
+
+    <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2">
+            <form>
+                <input type="text" id="emailOrPhone" #emailOrPhone placeholder="Email или телефон...">
+                <button class="search_button" (click)="onSubmit(emailOrPhone.value)" type="submit"></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+            <div class="filters">
+                <mat-checkbox class="filled-in"
+                                [(ngModel)]="dLeadQuality"
+                                >
+                                Только качественные
+                </mat-checkbox>
+    
+                <mat-checkbox class="filled-in"
+                                [(ngModel)]="dLeadQualityFalse"
+                                >
+                                Только некачественные
+                </mat-checkbox>
+            </div>
+
+     
+    </div>
+    <div class="row">
+        <div class="col-4" *ngFor="let lead of leads  | done:dLeadQuality:dLeadQualityFalse:search; let i = index">
+            
+            <mat-card
+                  [ngClass]="{'card' : true, 'card-lead' : true, 'lighten-1' : true, 'white-text' : true, 'green': lead.isQualityLead, 'red' : !lead.isQualityLead}"
+                  (click)="openHistory($event, lead, i, leads)"
+                  >
+                  
+                  <mat-card-content class="white-text">
+                      <p class="card-content__comments">({{lead.count_create}}) <span class="clip">{{lead.title}}</span></p>
+    
+                      <a
+                              class="lead-link white-text lighten-3"
+                              [href]="lead.link ? lead.link : 'tel:lead.phone'"
+                              [target]=" lead.link ? '_blanck' : ''">
+                          {{ lead.link ? lead.link : lead.phone }}
+                      </a>
+                      <div class="flex-block content-between items-center">
+                          <div class="lead__source">
+                              &nbsp;
+                              <span class="lead__source-title">{{ lead.source.title }}</span>
+                              
+                          </div>
+    
+                          <svg 
+                                  *ngIf="lead.is_express_delivery"                                          
+                                  fill="#fff"
+                                  width="35px"
+                                  height="20px"
+                              ><use xlink:href="#delivery-icon"></use>
+                              </svg>
+                              
+                          <div
+                              class="lead__unit-title  unit__color"
+                              
+                
+                          >{{ lead.responsible }}
+                          </div>
+                      </div>
+                  </mat-card-content>
+                  
+              </mat-card>
+        </div>
+    
+    </div>
+    </div>
+    <div class="container center">
+        <div class="row">
+            <div class="col-12">
+                <button (click)="loadLead()" class="btn__end" mat-button color="primary" type="submit" name="action">
+                    Загрузить еще
+                </button>
+            </div>
+        </div>                
+    </div>

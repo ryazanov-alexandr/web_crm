@@ -1,0 +1,239 @@
+<div class="container" style="background-color: rgb(238, 241, 241)">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h4-title" *ngIf="isLead" style="font-size: 30px">Новый Лид</h1>
+            <h1 class="h4-title" *ngIf="!isLead" style="font-size: 30px">Новая задача</h1>
+        </div>
+    </div>
+    <form [formGroup]="leadForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-3">
+                <p  style="font-size: 16px">Лид или задача</p>
+                <mat-radio-group aria-label="Select an option" formControlName="is_lead">
+                        <mat-radio-button checked="checked" [value]="true">Лид</mat-radio-button>
+                        <mat-radio-button [value]="false">Задача</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+
+        <div class="row" [ngClass]="{'hidden': !isLead}" >
+            <div class="col-6">
+                <mat-form-field class="textarea-full-width">
+                    <mat-label>ФИО</mat-label>
+                    <input type="text" matInput placeholder="" formControlName="title">
+                  </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row" [ngClass]="{'hidden': !isLead}">
+            
+            <div formGroupName="linkPhone" class="row">
+                
+                <div class="col-6">
+                    <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input type="text" matInput formControlName="link" [ngClass]="{'invalid': flead.linkPhone.get('link').hasError('RequireLinkPhone')}" 
+                                placeholder="xxx@xxx.xxx" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"> <!--если ошибка валидации, то устанавливаем класс invalid-->
+                    
+                        <mat-error *ngIf="flead.linkPhone.get('link').hasError('RequireLinkPhone')"> <!--если ошибка валидации выводим ошибку-->
+                            <div>Укажите ссылку или телефон</div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field class="full-width">
+                        <mat-label>Телефон</mat-label>
+                        <input type="tel" matInput formControlName="phone" [ngClass]="{'invalid': flead.linkPhone.get('phone').hasError('RequireLinkPhone')}"
+                                placeholder="+7(xxx)xxx-xx-xx" pattern="[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{2}[\-]\d{2}" minlength="16" maxlength="16">
+                    
+                        <mat-error *ngIf="flead.linkPhone.get('phone').hasError('RequireLinkPhone')">
+                            <div>Укажите ссылку или телефон</div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" [ngClass]="{'hidden': !isLead}">
+            <div class="col-6">
+                <mat-form-field appearance="fill" class="select-wrap">
+                    <mat-label>Ответственный</mat-label>
+                    <mat-select formControlName="responsible_id">
+                        <mat-option *ngFor="let user of users" [value]="user.id">
+                        {{user.firstname}} {{user.lastname}}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+            </div>
+             <div class="col-6">
+                <mat-form-field appearance="fill" class="select-wrap">
+                    <mat-label>Источник</mat-label>
+                    <mat-select formControlName="source_id">
+                      <mat-option *ngFor="let source of sources" [value]="source.id">
+                        {{source.title}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="invalid_custom" *ngIf="flead.source_id.errors  && flead.source_id.errors.required && flead.source_id.touched">Обязательно к заполнению</div>
+            </div>
+        </div>
+        <div [ngClass]="{'hidden': !isLead, 'row center': true}"> <!--этот блок будет скрыт если форма будет работать в режиме таск-->
+
+            <div class="col-4">
+                <div>Доп. продажа?</div>
+                <mat-radio-group aria-label="Select an option" formControlName="is_add_sale">
+                    
+                    <mat-radio-button 
+                        checked="checked"
+                        [value]="'0'"
+                    >
+                        Нет
+                    </mat-radio-button>
+                    
+                    <mat-radio-button 
+                        [value]="'1'"
+                    >
+                        Да
+                    </mat-radio-button>
+                
+                </mat-radio-group>
+            </div>
+            <div class="col-4">
+                <div>Экспресс доставка?</div>
+                <mat-radio-group aria-label="Select an option" formControlName="is_express_delivery">
+                    
+                    <mat-radio-button 
+                        checked="checked"
+                        [value]="'0'"
+                    >
+                        Нет
+                    </mat-radio-button>
+                    
+                    <mat-radio-button 
+                        [value]="'1'"
+                    >
+                        Да
+                    </mat-radio-button>
+                
+                </mat-radio-group>
+            </div>
+        </div>
+         <div class="row" [ngClass]="{'hidden': !isLead}">
+            <div class="col-12">
+                <mat-form-field class="textarea-full-width">
+                    <mat-label>Комментарий</mat-label>
+                    <textarea  matInput placeholder="" formControlName="text"></textarea>
+                  </mat-form-field>
+            </div>
+        </div>
+
+        <div class="login_submit_button" [ngClass]="{'hidden': !isLead}">
+            <button type="submit" [disabled]="leadForm.invalid" mat-button color="primary">Сохранить<i class="material-icons right">send</i></button>
+        </div>
+
+    </form>
+    
+    <form [formGroup]="taskForm" (ngSubmit)="onTaskSubmit()">
+
+        <div class="row" [ngClass]="{'hidden': isLead}">
+            <div class="col-6">
+                <mat-form-field class="textarea-full-width">
+                    <mat-label>Название</mat-label>
+                    <input type="text" matInput placeholder="" formControlName="title">
+                  </mat-form-field>
+                  <mat-form-field class="textarea-full-width" [ngClass]="{'hidden': isLead}">
+                    <mat-label>Описание</mat-label>
+                    <textarea matInput placeholder="" formControlName="description"></textarea>
+                  </mat-form-field>
+            </div>
+
+            <div class="col-6">
+                <mat-form-field appearance="fill">
+                    <mat-label>Время выполнения</mat-label>
+                    <mat-select id="taskSelection" formControlName="time_to_complete">
+                    <mat-option value="15">15 мин</mat-option>
+                    <mat-option value="30">30 мин</mat-option>
+                    <mat-option value="60">1 час</mat-option>
+                    <mat-option value="120">2 часа</mat-option>
+                    <mat-option value="180">3 часа</mat-option>
+                    <mat-option value="240">4 часа</mat-option>
+                    <mat-option value="300">5 часов</mat-option>
+                    <mat-option value="360">6 часов</mat-option>
+                    <mat-option value="420">7 часов</mat-option>
+                    <mat-option value="480">8 часов</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-6">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Выберите дату выполнения</mat-label>
+                    <input matInput [min]="minDate" [max]="maxDate" type="datetime-local"  formControlName="due_date">
+                    <mat-hint>ММ/ДД/ГГГГ</mat-hint>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  
+            </div>
+
+        </div>
+
+        <div class="row" [ngClass]="{'hidden': isLead}">
+            <div class="col-6">
+                <mat-form-field appearance="fill" class="select-wrap">
+                    <mat-label>Приоритет</mat-label>
+                    <mat-select formControlName="priority_id">
+                      <mat-option *ngFor="let priority of priorities" [value]="priority.id">
+                        {{priority.title_ru}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="invalid_custom" *ngIf="ftask.priority_id.errors  && ftask.priority_id.errors.required && ftask.priority_id.touched">Обязательно к заполнению</div>
+            </div>
+
+            <div class="col-6">
+                <mat-form-field appearance="fill" class="select-wrap">
+                    <mat-label>Лид</mat-label>
+                    <mat-select formControlName="lead_id">
+                      <mat-option *ngFor="let lead of leads" [value]="lead.id">
+                        {{lead.title}} {{lead.link}} {{lead.phone}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="invalid_custom" *ngIf="ftask.lead_id.errors  && ftask.lead_id.errors.required && ftask.lead_id.touched">Обязательно к заполнению</div>
+            </div>
+        </div>
+
+
+        <div class="row" [ngClass]="{'hidden': isLead}">
+            <div class="col-6">
+                <mat-form-field appearance="fill" class="select-wrap">
+                    <mat-label>Ответственный</mat-label>
+                    <mat-select formControlName="responsible_id">
+                        <mat-option *ngFor="let user of users" [value]="user.id">
+                        {{user.firstname}} {{user.lastname}}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+            </div>
+        </div>
+
+         <div class="row" [ngClass]="{'hidden': isLead}">
+            <div class="col-12">
+                <mat-form-field class="textarea-full-width">
+                    <mat-label>Комментарий</mat-label>
+                    <textarea matInput placeholder="" formControlName="text"></textarea>
+                  </mat-form-field>
+            </div>
+        </div>
+
+        <div class="login_submit_button" [ngClass]="{'hidden': isLead}">
+            <button type="submit" [disabled]="taskForm.invalid" mat-button text-size="16px" color="primary">Сохранить<i class="material-icons right" style="font-size: 18px;">send</i></button>
+        </div>
+
+        <div class="row">
+            
+        </div>
+    </form>
+
+</div>

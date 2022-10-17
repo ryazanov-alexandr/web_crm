@@ -1,0 +1,57 @@
+<h1 mat-dialog-title></h1>
+<div mat-dialog-content>
+    
+    <div class="row">
+        <div class="col-12">
+            <h4 class="h4-title">
+                <p>Название: {{data.task.title}}</p>
+                <p>Описание: {{data.task.description}}</p>
+                <div>
+                    <span class="lead__source-title">
+                        <p>Лид: </p>
+                        {{data.task.lead.title}}: {{data.task.lead.link}}/{{data.task.lead.phone}}
+                    </span>
+                </div>
+            </h4>
+            <p>Дата выполнения: {{data.task.due_date}}</p>
+            <p>Время на выполнение: {{data.task.time_to_complete}}</p>
+            <div class="flex-block content-between">
+                <div>
+                    <span class="lead__source-icon"></span>
+                    <span class="lead__source-title"><strong>Выполнено:</strong> {{data.task.is_complete ? 'Да' : 'Нет'}}</span>
+                </div>
+               
+            </div>
+            <div class="flex-block content-between">
+                <p><strong>Приоритет:</strong> {{data.task.priority.title}}</p>
+                <p><strong>Автор:</strong> {{data.task.author}}</p>
+                <p><strong>Ответственный:</strong> {{data.task.responsible}}</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="row">
+
+        <mat-tab-group class="">
+            <mat-tab label="Comments">
+                <div class="col-12">
+                    <div *ngFor="let cComment of taskComments | eventTask:0" >
+                        <p>{{cComment.created_at_r}}</p>
+                        <p [innerHTML]="cComment.text"></p>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Events"> 
+                <div  class="col-12">
+                    <div *ngFor="let cComment of taskComments | eventTask:1" >
+                        <p>{{cComment.created_at_r}}</p>
+                        <p [innerHTML]="cComment.text"></p>
+                    </div>
+                </div> 
+            </mat-tab> 
+        </mat-tab-group>
+          
+    </div>
+
+</div>

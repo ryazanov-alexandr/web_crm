@@ -1,0 +1,117 @@
+<div class="container" style="background-color: rgb(238, 241, 241)">
+    <div class="row">
+      <div class="col-12">
+        <h4>Аналитика</h4>
+      </div>
+    </div>
+  
+    
+  
+    <div class="row">
+        <div class="col-6" >
+          <mat-form-field appearance="fill" [hidden]="!isAnalytic">
+            <mat-label>Диапазон дат</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date" [(ngModel)]="dateStart" #dateRangeStart>
+              <input matEndDate placeholder="End date" [(ngModel)]="dateEnd" #dateRangeEnd>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+          
+          <button type="submit" (click)="getAllAnalytics()" mat-button color="primary">Отправить</button>  
+  
+        </div>
+    </div>
+  
+  
+    <div class="row" [hidden]="!isAnalytic">
+      <div class="col-12">
+        <table class="analytics_table" style="background-color: rgb(248, 250, 250)">
+            <thead>
+                <tr>
+                    <th class="center" rowspan="2">Менеджер</th>
+                    <th class="center" rowspan="2">Количество лидов</th>
+                    <th class="center" colspan="2">Успешные</th>
+                    <th class="center" colspan="2">Неуспешные</th>
+                    <th class="center" rowspan="2">Скачать</th>
+                </tr>
+                <tr>
+                    <th class="center" >Всего</th>
+                    <th class="center" >С доп. продажами</th>
+                    <th class="center" >Всего</th>
+                    <th class="center" >С доп. продажами</th>
+                </tr>
+  
+            </thead>
+  
+            <tbody>
+                <tr  *ngFor="let data of employeeAnalytic">
+    
+                    <td class="center" >{{data.firstname}} {{data.lastname}}</td>
+                    <td class="center" >{{data.CountLeads}}</td>
+                    <td class="center" >{{data.CountQualityLeads}}</td>
+                    <td class="center" >{{data.CountQualitySaleLeads}}</td>
+                    <td class="center" >{{data.CountNotQualityLeads}}</td>
+                    <td class="center" >{{data.CountNotQualitySaleLeads}}</td>
+                    <td class="center" >
+                        <a [href]="path + 'analytics/export/' + data.id  +'/' + dateHelper(dateStart) + '/' + dateHelper(dateEnd)" mat-button color="primary" style="font-size: 16px"><strong>Скачать</strong> </a>
+                    </td>
+    
+                </tr>
+  
+            </tbody>
+  
+        </table>
+      </div>
+
+    </div>
+
+    <div class="row" [hidden]="isAnalytic">
+        <div class="col-12">
+          <fm-pivot
+              [toolbar]="true">
+          </fm-pivot>
+        </div>
+    </div>
+    <div class="chart-wrapper">
+  </div>
+
+  <div class="row" [hidden]="!isAnalytic">
+
+    <div class="col-8">
+      <div class="chart-wrapper">
+        <canvas baseChart baseColors style="font-size: 1px"
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [type]="'bar'">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="chart-wrapper">
+        <canvas baseChart baseColors style="font-size: 16px"
+          [datasets]="doughnutChartData"
+          [labels]="doughnutChartLabels"
+          [type]="'doughnut'">
+        </canvas>
+      </div>
+    </div>
+        
+    <div class="col-6">
+      <div class="chart-wrapper">
+        <canvas baseChart
+        [datasets]="radarChartData"
+        [labels]="radarChartLabels"
+        [type]="'radar'">
+        </canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+

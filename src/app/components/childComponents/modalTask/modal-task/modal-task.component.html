@@ -1,0 +1,106 @@
+<h1 mat-dialog-title>Новое задание</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="col-12">
+            
+            
+            <div class="row">
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field class="textarea-full-width">
+                            <mat-label>Название</mat-label>
+                            <input type="text" matInput placeholder="" formControlName="title">
+                          </mat-form-field>
+                          <mat-form-field class="textarea-full-width">
+                            <mat-label>Описание</mat-label>
+                            <textarea matInput placeholder="" formControlName="description"></textarea>
+                          </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Время выполнения</mat-label>
+                            <mat-select id="taskSelection" formControlName="time_to_complete">
+                            <mat-option value="15">15 мин</mat-option>
+                            <mat-option value="30">30 мин</mat-option>
+                            <mat-option value="60">1 час</mat-option>
+                            <mat-option value="120">2 часа</mat-option>
+                            <mat-option value="180">3 часа</mat-option>
+                            <mat-option value="240">4 часа</mat-option>
+                            <mat-option value="300">5 часов</mat-option>
+                            <mat-option value="360">6 часов</mat-option>
+                            <mat-option value="420">7 часов</mat-option>
+                            <mat-option value="480">8 часов</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                            <mat-label>Выберите дату выполнения</mat-label>
+                            <input matInput [min]="minDate" [max]="maxDate" type="datetime-local"  formControlName="due_date">
+                            <mat-hint>ДД/ММ/ГГГГ</mat-hint>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                          
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Приоритет</mat-label>
+                            <mat-select formControlName="priority_id">
+                              <mat-option *ngFor="let priority of priorities" [value]="priority.id">
+                                {{priority.title_ru}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div class="invalid_custom" *ngIf="f.priority_id.errors  && f.priority_id.errors.required && f.priority_id.touched">Обязательно к заполнению</div>
+                    </div>
+    
+                    <div class="col-6">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Лид</mat-label>
+                            <mat-select formControlName="lead_id">
+                              <mat-option *ngFor="let lead of leads" [value]="lead.id">
+                                {{lead.title}} {{lead.link}} {{lead.phone}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div class="invalid_custom" *ngIf="f.lead_id.errors  && f.lead_id.errors.required && f.lead_id.touched">Обязательно к заполнению</div>
+                    </div>
+                </div>
+    
+                
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Ответственный</mat-label>
+                            <mat-select formControlName="responsible_id">
+                                <mat-option *ngFor="let user of users" [value]="user.id">
+                                {{user.firstname}} {{user.lastname}} 
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="invalid_custom" *ngIf="f.responsible_id.errors  && f.responsible_id.errors.required && f.responsible_id.touched">Обязательно к заполнению</div>
+                    </div>
+    
+                    <div class="col-6">
+                        <mat-form-field class="textarea-full-width">
+                            <mat-label>Комментарий</mat-label>
+                            <textarea matInput placeholder="" formControlName="text"></textarea>
+                          </mat-form-field>
+                    </div>
+                </div>
+    
+                <div class="login_submit_button">
+                    <button type="submit" [disabled]="form.invalid" mat-button color="primary">Сохранить<i class="material-icons right">send</i></button>
+                </div>
+    
+            </div>
+    
+        
+            
+            
+            
+        </form>
+    </div>
+</div>

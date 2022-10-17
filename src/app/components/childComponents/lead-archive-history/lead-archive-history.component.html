@@ -1,0 +1,60 @@
+<h1 mat-dialog-title></h1>
+<div mat-dialog-content>
+    
+    <div class="row">
+        <div class="col-12">
+            <h4 class="h4-title">
+                <a
+                    [href]="data.lead.link ? data.lead.link : 'tel:lead.phone'"
+                    [target]=" data.lead.link ? '_blank' : ''"
+                >{{data.lead.link ? data.lead.link : data.lead.phone}}
+                </a>
+            </h4>
+            <p>Дата создания: {{data.lead.created_at}}</p>
+            <div class="flex-block content-between">
+                <div>
+                    <span class="lead__source-icon"></span>
+                    <span class="lead__source-title"><strong>Источник:</strong> {{data.lead.source.title}}</span>
+                </div>
+                <div
+                    class="lead__unit-title"
+                ><strong>Ответственный</strong> {{ data.lead.responsible }}
+                </div>
+            </div>
+
+            <div class="flex-block content-between">
+                <p><strong>Доп. продажа:</strong> {{data.lead.is_add_sale ? 'Да' : 'Нет'}}
+                </p>
+                <p><strong>Курьерская доставка: </strong> {{data.lead.is_express_delivery ? 'Да' : 'Нет'}}</p>
+                <p><strong>Статус:</strong> {{data.lead.status.title_ru}}</p>
+                <p><strong>Автор:</strong> {{data.lead.author}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <mat-tab-group class="">
+            <mat-tab label="Comments">
+                <div class="col-12">
+                    <div *ngFor="let cComment of leadComments | event:0" >
+                        <p>{{cComment.created_at_r}}</p>
+                        <p [innerHTML]="cComment.text"></p>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Events"> 
+                <div  class="col-12">
+                    <div *ngFor="let cComment of leadComments | event:1" >
+                        <p>{{cComment.created_at_r}}</p>
+                        <p [innerHTML]="cComment.text"></p>
+                    </div>
+                </div> 
+        </mat-tab>
+           
+          </mat-tab-group>
+          
+        
+    </div>
+
+</div>

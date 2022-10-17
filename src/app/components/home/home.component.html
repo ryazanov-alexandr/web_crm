@@ -1,0 +1,139 @@
+<div class="dashboard-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="wrapper" style="--wrapper-width: 440px; --wrapper-height: 500px; background-color: #fff;">
+
+                    <div class="row" style="margin: 0 0 0 0; padding: 0 0 0 0;">
+                        <div class="col-12">
+                            <h3 style="margin: 7px 0 0 16px;">Новые лиды на сотрудниках компании</h3>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas baseChart baseColors
+                        [datasets]="countLeadsResponsibles"
+                        [labels]="fullnamesResponsibles"
+                        [type]="'doughnut'">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">   
+                <div class="wrapper" style="--wrapper-width: 460px; --wrapper-height: 500px; --wrapper-min-width: 360px; --wrapper-min-height: 500px; background-color: #fff;">
+                    <mat-list>
+                        <div class="row">
+                            <div class="col-8">
+                                <h3 style="margin-left: 16px;">Качественные лиды за сегодня</h3>
+                            </div>
+                            <div class="col-1">
+                                <h3 style="margin-left: 0px;">{{leadsDoneToday?.length}}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5" style="margin-left: 21px;">
+                                <h4><strong>Лид</strong></h4>
+                            </div>
+                            <div class="col-2" style="margin-left: 58px;">
+                                <h4><strong>Контакты</strong></h4>
+                            </div>
+                        </div>
+                        <mat-list-item *ngFor="let lead of leadsDoneToday; last as last">
+                        <div class="row">
+                            <div class="col-7">
+                                <a href="">{{lead.title}}</a>
+                            </div>
+                            <div class="col-5">
+                                <span> 
+                                    <a href=""> {{lead.link}}</a>
+                                    <h3 mat-line class="demo-2">   {{lead.phone}} </h3>
+                                </span>
+                            </div>
+                        </div>
+
+                       
+                        </mat-list-item>
+                     
+                    </mat-list>
+                </div>
+            </div> 
+
+            <div class="col-3.8">   
+                <div class="wrapper" style="--wrapper-width: 380px; --wrapper-height: 500px; --wrapper-min-width: 300px; --wrapper-min-height: 500px; background-color: #fff;">
+                    <mat-list>
+                        <div class="row">
+                            <div class="col-3">
+                                <h3 style="margin-left: 16px;">Задачи</h3>
+                            </div>
+                            <div class="col-1">
+                                <h3 style="margin-left: 0px;">{{tasks?.length}}</h3>
+                            </div>
+                        </div>
+                    <mat-list-item *ngFor="let task of tasks;">
+                        <div class="row">
+                            <div class="col-12">
+                                    <span>
+                                        <a href="/tasks">{{task.title}}</a>
+                                        <h5 mat-line><strong>{{task.responsible}}</strong> </h5>   
+                                    </span>
+                            </div>
+                        
+                        </div>
+
+                       
+                        </mat-list-item>
+                     
+                    </mat-list>
+                </div>
+            </div> 
+
+            <div class="col-1">   
+                <div class="wrapper" [routerLink]="'/tasks'" style="--wrapper-width: 180px; --wrapper-height: 161px; --wrapper-min-width: 180px; --wrapper-min-height: 161px; background-color: #fff;">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 style="margin-left: 16px;">Мои задачи</h3>
+                        </div>                        
+                    </div>
+
+                    <div class="row" style="margin-top: 16px;">
+                        <div class="col-12" padding-bottom="30px">
+                            <h1 mat-line style="font-size: 80px; text-align: center; color: grey;">{{countUserTasks}}</h1>
+                        </div>   
+                    </div>
+                    
+                   
+                </div>
+                <div class="wrapper" [routerLink]="'/tasks'" style="--wrapper-width: 180px; --wrapper-height: 161px; --wrapper-min-width: 180px; --wrapper-min-height: 161px; background-color: #fff;">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 style="margin-left: 16px;">Просроченные</h3>
+                        </div>                        
+                    </div>
+
+                    <div class="row" style="margin-top: 16px;">
+                        <div class="col-12" padding-bottom="30px">
+                            <h1 mat-line style="font-size: 80px; text-align: center; color: grey;">{{countUserExpiredTasks}}</h1>
+                        </div>   
+                    </div>
+                   
+                </div>
+                <div class="wrapper" [routerLink]="'/tasks'" style="--wrapper-width: 180px; --wrapper-height: 162px; --wrapper-min-width: 180px; --wrapper-min-height: 162px; background-color: #fff;">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 style="margin-left: 16px;">Истекающие</h3>
+                        </div>                        
+                    </div>
+
+                    <div class="row" style="margin-top: 16px;">
+                        <div class="col-12" padding-bottom="30px">
+                            <h1 mat-line style="font-size: 80px; text-align: center; color: grey;">{{countUserTasksExpiring}}</h1>
+                        </div>   
+                    </div>
+                   
+                </div>
+            </div> 
+        </div>
+
+
+    </div>
+</div>

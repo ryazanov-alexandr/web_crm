@@ -1,0 +1,32 @@
+.wrapper 
+  max-width: var(--wrapper-width, 1170px)
+  max-height: var(--wrapper-height, 1170px)
+  min-width: var(--wrapper-min-width, 100px)
+  min-height: var(--wrapper-min-height, 100px)
+  margin-top: 8px
+  position: relative
+  border-radius: 3px
+  line-height: 1.4
+  box-shadow:3px 3px 3px darkgrey
+
+  &:hover
+    cursor: pointer
+    transform: scale(1.025)
+
+.row [class^="col"] 
+  float: left
+  margin: 5px 
+  min-height: 0.125rem
+
+.chart-wrapper
+  height: 500px
+
+.verticalLine_urgent 
+    border-left: thick solid #b20000
+.verticalLine_high 
+    border-left: thick solid #e97911
+.verticalLine_medium 
+    border-left: thick solid #008b13
+.verticalLine_low 
+    border-left: thick solid #00b6e4
+

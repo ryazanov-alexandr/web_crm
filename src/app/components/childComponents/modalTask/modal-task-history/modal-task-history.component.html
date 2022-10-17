@@ -1,0 +1,107 @@
+<div mat-dialog-content>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="h4-title">
+                <p><strong>Название:</strong>{{data.task.title}}</p>
+                <p><strong>Описание:</strong>{{data.task.description}}</p>
+                <div>
+                    <span class="lead__source-title">
+                        <p><strong>Лид:</strong> {{data.task.lead.title}}</p>
+                        <p style="margin-bottom: 0px"><strong>Контакты:</strong>  {{data.task.lead.link}} </p>
+                        <h4 style="margin-left: 78px;">{{data.task.lead.phone}}</h4>
+                    </span>
+                </div>
+            </h4>
+           
+            <div class="flex-block content-between">
+                <p class="lead__source-title"><strong>Выполнено: </strong>{{data.task.is_complete ? 'Да' : 'Нет'}}</p>
+                <p class="lead__source-title"><strong>Дата выполнения: </strong>{{data.task.due_date}}</p>
+                <p class="lead__source-title"><strong>Время на выполнение: </strong>{{data.task.time_to_complete}}</p>
+                <p><strong>Автор: </strong> {{data.task.author}}</p>
+
+            </div>
+
+           
+        </div>
+    </div>
+
+    <div class="row">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="col-12">
+                
+                <div class="row">
+                    <div class="col-4">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Приоритет</mat-label>
+                            <mat-select formControlName="priority_id">
+                              <mat-option *ngFor="let priority of priorities" [value]="priority.id">
+                                {{priority.title_ru}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                    
+                    <div class="col-4">
+                        <mat-form-field appearance="fill" class="select-wrap">
+                            <mat-label>Ответственный</mat-label>
+                            <mat-select formControlName="responsible_id">
+                                <mat-option *ngFor="let user of users" [value]="user.id">
+                                {{user.firstname}} {{user.lastname}} 
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="filters">
+                            <mat-checkbox class="filled-in" formControlName="is_complete"
+                                [(ngModel)]="isComplete">
+                                Выполнено
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+    
+
+    
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field class="textarea-full-width">
+                            <mat-label>Комментарий</mat-label>
+                            <textarea matInput placeholder="" formControlName="text"></textarea>
+                          </mat-form-field>
+                    </div>
+                </div>
+    
+                <div class="login_submit_button">
+                    <button type="submit" [disabled]="form.invalid" mat-button color="primary">Сохранить<i class="material-icons right">send</i></button>
+                </div>
+            
+        </form>
+    </div>
+
+    <div class="row">
+
+        <mat-tab-group class="">
+            <mat-tab label="Comments">
+                <div class="col-12">
+                    <div *ngFor="let cComment of taskComments | eventTask:0" >
+                        <p>{{cComment.created_at_r}}</p>
+                        <p [innerHTML]="cComment.text"></p>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Events"> 
+                <div  class="col-12">
+                    <div *ngFor="let cComment of taskComments | eventTask:1" >
+                        <p>{{cComment.created_at_r}}</p>
+                        <p [innerHTML]="cComment.text"></p>
+                    </div>
+                </div> 
+        </mat-tab>
+           
+          </mat-tab-group>
+          
+        
+    </div>
+
+</div>
